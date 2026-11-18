@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.0 — 2026-11-18
+
+- Publish the tested Alpha 2 functionality as the first stable release.
+- Keep path-based attribution and existing explicitly labelled prefix hints unchanged.
+- Add public Composer installation and update instructions in English and German.
+- Exclude personal deployment guides and local release tools from the repository.
+- Build the frontend without code comments or source-map references.
+
 ## 0.1.0-alpha.2
 
 - Attribute a leading `[depot]` log prefix to the installed `ernestdefoe/depot` package.

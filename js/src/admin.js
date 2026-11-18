@@ -109,7 +109,7 @@ export class AnalyzerPage extends ExtensionPage {
     return m('.EA', [
       m('section.EA-hero', [
         m('div', [m('h2', [icon('stethoscope'), ' Error Analyzer']), m('p', translate('intro'))]),
-        m('span.EA-version', this.data?.version || '0.1.0-alpha.2'),
+        m('span.EA-version', this.data?.version || '1.0.0'),
       ]),
       m('section.EA-scan', { 'aria-label': reportText('scan_options') }, [
         m('label', [translate('file_limit'), m('select.FormControl', { value: this.files, disabled: this.loading, onchange: (event) => { this.files = event.target.value; } },

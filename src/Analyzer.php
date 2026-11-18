@@ -4,7 +4,7 @@ namespace ElChoco\ErrorAnalyzer;
 
 final class Analyzer
 {
-    public const VERSION = '0.1.0-alpha.2';
+    public const VERSION = '1.0.0';
     private const LEVELS = ['DEBUG' => 100, 'INFO' => 200, 'NOTICE' => 250, 'WARNING' => 300,
         'ERROR' => 400, 'CRITICAL' => 500, 'ALERT' => 550, 'EMERGENCY' => 600];
     private const MAX_BYTES = 8388608;

@@ -2,8 +2,34 @@
 
 Understand recurring forum log errors and prepare the information needed for support.
 
-**Version 0.1.0-alpha.2 · Flarum 2.0.2 or later · PHP 8.3 or later · MIT**
+**Version 1.0.0 · Flarum 2.0.2 or later · PHP 8.3 or later · MIT**
 
+
+## Installation
+
+Once version 1.0.0 is available on Packagist, run these commands from the Flarum installation directory as the forum's filesystem user:
+
+```bash
+composer require el-choco/error-analyzer:"^1.0" --update-no-dev --minimal-changes --no-scripts --no-interaction
+php flarum cache:clear --force
+```
+
+Enable **Error Analyzer** in the administration panel. No worker or database migration is required.
+
+For Docker, run Composer and Flarum commands inside the forum container as its Flarum user. With CrazyMax, run `extension sync` after the successful Composer operation and before clearing the cache to persist the extension list. Keep the Composer home used by your image. Container names and paths depend on your installation.
+
+## Updating
+
+```bash
+composer update el-choco/error-analyzer --update-no-dev --minimal-changes --no-scripts --no-interaction
+php flarum cache:clear --force
+```
+
+Use the same user, directory and container settings as installation, including `extension sync` with CrazyMax. Reload PHP-FPM if OPcache retains old code, then refresh the admin page.
+
+If upgrading from a local path installation, first remove or update its repository definition: a canonical local path repository can prevent Composer from selecting the Packagist release. Keep local sources until Composer no longer references them.
+
+[Source and issues](https://github.com/el-choco/error-analyzer) · [Packagist](https://packagist.org/packages/el-choco/error-analyzer)
 
 ## Features
 
@@ -73,7 +99,7 @@ Run backend checks with PHP 8.3+ and a separate Flarum 2 dependency autoloader.
 php tests/run.php /path/to/test-forum/vendor/autoload.php
 ```
 
-Tests create their own temporary log and package fixtures and check grouping, filtering, limits, package attribution, redaction and authorization with real Flarum dependencies. Browser checks use sample data. The maintainer reported repeated successful Alpha 1 tests on Flarum 2.0.2 and web PHP 8.5.12 in the CrazyMax container. Alpha 2 prefix attribution has been checked locally, with its target-container test still pending.
+Tests create their own temporary log and package fixtures and check grouping, filtering, limits, package attribution, redaction and authorization with real Flarum dependencies. Browser checks use sample data. The maintainer has repeatedly tested the functionality successfully on Flarum 2.0.2 with web PHP 8.5.12 in a CrazyMax container, including prefix attribution. Version 1.0.0 publishes that tested functionality as the first stable release.
 
 
 ---
@@ -82,9 +108,35 @@ Tests create their own temporary log and package fixtures and check grouping, fi
 
 Fehler im Forum schneller einordnen und die passenden Informationen für den Support zusammenstellen.
 
-**Version 0.1.0-alpha.2 · Flarum ab 2.0.2 · PHP ab 8.3 · MIT**
+**Version 1.0.0 · Flarum ab 2.0.2 · PHP ab 8.3 · MIT**
 
-[English documentation](README.en.md) · [Deutsche Installation](INSTALL-DE.md) · [English installation](INSTALL-EN.md)
+
+
+## Installation
+
+Sobald Version 1.0.0 auf Packagist verfügbar ist, diese Befehle im Flarum-Verzeichnis als Dateisystembenutzer des Forums ausführen:
+
+```bash
+composer require el-choco/error-analyzer:"^1.0" --update-no-dev --minimal-changes --no-scripts --no-interaction
+php flarum cache:clear --force
+```
+
+**Error Analyzer** anschließend im Adminbereich aktivieren. Ein Worker oder eine Datenbankmigration ist nicht erforderlich.
+
+Bei Docker die Composer- und Flarum-Befehle im Forum-Container als Flarum-Benutzer ausführen. Bei CrazyMax nach erfolgreichem Composer-Vorgang und vor dem Cache-Leeren zusätzlich `extension sync` ausführen, damit die Erweiterungsliste gespeichert wird. Das von deinem Image verwendete Composer-Home beibehalten. Containername und Pfade hängen von deiner Installation ab.
+
+## Aktualisieren
+
+```bash
+composer update el-choco/error-analyzer --update-no-dev --minimal-changes --no-scripts --no-interaction
+php flarum cache:clear --force
+```
+
+Dieselben Benutzer-, Verzeichnis- und Container-Einstellungen wie bei der Installation verwenden, einschließlich `extension sync` bei CrazyMax. Falls OPcache alten Code hält, PHP-FPM neu laden und anschließend den Adminbereich aktualisieren.
+
+Bei einem Wechsel von einer lokalen Path-Installation zunächst deren Repository-Eintrag entfernen oder aktualisieren: Ein kanonisches lokales Repository kann die Auswahl der Packagist-Version verhindern. Lokale Quellen erst entfernen, wenn Composer nicht mehr darauf verweist.
+
+[Quellcode und Fehlerberichte](https://github.com/el-choco/error-analyzer) · [Packagist](https://packagist.org/packages/el-choco/error-analyzer)
 
 ## Funktionen
 
@@ -155,6 +207,4 @@ Backend-Prüfung mit einem separaten Flarum-2-Autoloader und PHP 8.3 oder neuer 
 php tests/run.php /pfad/zum/testforum/vendor/autoload.php
 ```
 
-Die Tests legen eigene temporäre Log- und Paketdateien an. Sie prüfen Gruppierung, Filter, Begrenzungen, Paketzuordnung, Maskierung und Zugriffsschutz mit echten Flarum-Abhängigkeiten. Browserprüfungen verwenden Beispieldaten. Alpha 1 wurde vom Betreiber mehrfach erfolgreich mit Flarum 2.0.2 und Web-PHP 8.5.12 im CrazyMax-Container getestet. Die Präfixzuordnung von Alpha 2 ist lokal geprüft, der Praxistest dieser Ausgabe im Zielcontainer steht noch aus.
-
-[Update auf Alpha 2](UPDATE-DE.md) · [Upgrade to Alpha 2](UPDATE-EN.md)
+Die Tests legen eigene temporäre Log- und Paketdateien an. Sie prüfen Gruppierung, Filter, Begrenzungen, Paketzuordnung, Maskierung und Zugriffsschutz mit echten Flarum-Abhängigkeiten. Browserprüfungen verwenden Beispieldaten. Der Betreiber hat die Funktionen einschließlich der Präfixzuordnung mehrfach erfolgreich mit Flarum 2.0.2 und Web-PHP 8.5.12 im CrazyMax-Container getestet. Version 1.0.0 veröffentlicht diesen getesteten Funktionsumfang als erste stabile Ausgabe.

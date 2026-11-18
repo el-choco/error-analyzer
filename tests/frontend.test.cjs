@@ -34,7 +34,7 @@ const group = { id: 'a', level: 'ERROR', count: 3, message: 'Broken image <scrip
   sample: 'Error with ``` in the message\n#0 [flarum]/vendor/acme/media/A.php(12): run(…)',
   packages: [{ name: 'acme/media', version: '1.2.0', type: 'extension', enabled: true }], files: ['flarum-2026-11-18.log'] };
 const fixture = {
-  version: '0.1.0-alpha.2', generatedAt: '2026-11-18T12:00:00Z',
+  version: '1.0.0', generatedAt: '2026-11-18T12:00:00Z',
   scan: { filesScanned: 1, filesFound: 1, records: 6, matched: 4, bytes: 12345, partial: true, warnings: [] },
   environment: { flarum: 'v2.0.2', phpWeb: '8.4.26', extensions: [...group.packages, { name: 'acme/other', version: '2.0.0', enabled: false }] },
   groups: [group, { ...group, id: 'b', count: 1, message: 'Other failure', last: '2026-11-18T12:00:00Z', packages: [] }],

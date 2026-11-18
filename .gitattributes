@@ -6,3 +6,7 @@
 /dist export-ignore
 /js/src export-ignore
 /js/package-lock.json export-ignore
+/INSTALL-DE.md export-ignore
+/INSTALL-EN.md export-ignore
+/UPDATE-DE.md export-ignore
+/UPDATE-EN.md export-ignore

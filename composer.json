@@ -3,21 +3,53 @@
   "description": "Group Flarum log errors, identify packages mentioned in stack traces, and prepare redacted support reports.",
   "type": "flarum-extension",
   "license": "MIT",
-  "authors": [{"name": "el-choco"}],
-  "keywords": ["flarum", "logs", "diagnostics", "support"],
+  "authors": [
+    {
+      "name": "el-choco"
+    }
+  ],
+  "keywords": [
+    "flarum",
+    "logs",
+    "diagnostics",
+    "support"
+  ],
   "require": {
     "php": "^8.3",
     "flarum/core": "^2.0.2"
   },
   "autoload": {
-    "psr-4": {"ElChoco\\ErrorAnalyzer\\": "src/"}
+    "psr-4": {
+      "ElChoco\\ErrorAnalyzer\\": "src/"
+    }
   },
   "extra": {
     "flarum-extension": {
       "title": "Error Analyzer",
       "category": "admin",
-      "icon": {"name": "fas fa-stethoscope", "backgroundColor": "#4d698e", "color": "#ffffff"}
+      "icon": {
+        "name": "fas fa-stethoscope",
+        "backgroundColor": "#4d698e",
+        "color": "#ffffff"
+      }
     }
   },
-  "archive": {"exclude": ["/js/node_modules", "/tests", "/dist", "/resources", "/js/src", "/js/package-lock.json"]}
+  "archive": {
+    "exclude": [
+      "/js/node_modules",
+      "/tests",
+      "/dist",
+      "/resources",
+      "/js/src",
+      "/js/package-lock.json",
+      "/INSTALL-DE.md",
+      "/INSTALL-EN.md",
+      "/UPDATE-DE.md",
+      "/UPDATE-EN.md"
+    ]
+  },
+  "support": {
+    "issues": "https://github.com/el-choco/error-analyzer/issues",
+    "source": "https://github.com/el-choco/error-analyzer"
+  }
 }
