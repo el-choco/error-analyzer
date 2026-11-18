@@ -18,6 +18,12 @@ Enable **Error Analyzer** in the administration panel. No worker or database mig
 
 For Docker, run Composer and Flarum commands inside the forum container as its Flarum user. With CrazyMax, run `extension sync` after the successful Composer operation and before clearing the cache to persist the extension list. Keep the Composer home used by your image. Container names and paths depend on your installation.
 
+### Choosing a version constraint
+
+The recommended constraint is `"^1.0"`: it allows compatible releases from `1.0.0` up to, but excluding, `2.0.0`. Future 1.x releases can then be selected by a targeted Composer update or an update action in a management extension.
+
+`"*"` also works, but permits any version, including future major releases such as 2.0.0. Composer's stability settings still determine whether prereleases are eligible. An exact constraint such as `"1.0.0"` keeps that version pinned until you change the requirement. Updates are not installed automatically by the constraint alone.
+
 ## Updating
 
 ```bash
@@ -27,7 +33,7 @@ php flarum cache:clear --force
 
 Use the same user, directory and container settings as installation, including `extension sync` with CrazyMax. Reload PHP-FPM if OPcache retains old code, then refresh the admin page.
 
-If upgrading from a local path installation, first remove or update its repository definition: a canonical local path repository can prevent Composer from selecting the Packagist release. Keep local sources until Composer no longer references them.
+If upgrading from a local path installation, first remove or update its repository definition: a canonical local path repository can prevent Composer from selecting the Packagist release. Keep local sources until Composer no longer references them. Remove the repository entry from the configuration where it was defined (project or global). Then run the installation command above with `"^1.0"` to replace any pinned alpha requirement. A plain `composer update` does not change that requirement.
 
 [Source and issues](https://github.com/el-choco/error-analyzer) · [Packagist](https://packagist.org/packages/el-choco/error-analyzer)
 
@@ -125,6 +131,12 @@ php flarum cache:clear --force
 
 Bei Docker die Composer- und Flarum-Befehle im Forum-Container als Flarum-Benutzer ausführen. Bei CrazyMax nach erfolgreichem Composer-Vorgang und vor dem Cache-Leeren zusätzlich `extension sync` ausführen, damit die Erweiterungsliste gespeichert wird. Das von deinem Image verwendete Composer-Home beibehalten. Containername und Pfade hängen von deiner Installation ab.
 
+### Versionsvorgabe wählen
+
+Empfohlen ist `"^1.0"`: Damit sind Versionen ab `1.0.0` bis ausschließlich `2.0.0` erlaubt. Zukünftige 1.x-Versionen können dann durch ein gezieltes Composer-Update oder die Update-Funktion einer Verwaltungserweiterung ausgewählt werden.
+
+`"*"` funktioniert ebenfalls, erlaubt aber alle Versionen einschließlich späterer Hauptversionen wie 2.0.0. Composers Stabilitätseinstellungen bestimmen weiterhin, ob Vorabversionen infrage kommen. Eine exakte Vorgabe wie `"1.0.0"` hält diese Version fest, bis du die Vorgabe änderst. Allein durch die Versionsvorgabe werden keine Updates automatisch installiert.
+
 ## Aktualisieren
 
 ```bash
@@ -134,7 +146,7 @@ php flarum cache:clear --force
 
 Dieselben Benutzer-, Verzeichnis- und Container-Einstellungen wie bei der Installation verwenden, einschließlich `extension sync` bei CrazyMax. Falls OPcache alten Code hält, PHP-FPM neu laden und anschließend den Adminbereich aktualisieren.
 
-Bei einem Wechsel von einer lokalen Path-Installation zunächst deren Repository-Eintrag entfernen oder aktualisieren: Ein kanonisches lokales Repository kann die Auswahl der Packagist-Version verhindern. Lokale Quellen erst entfernen, wenn Composer nicht mehr darauf verweist.
+Bei einem Wechsel von einer lokalen Path-Installation zunächst deren Repository-Eintrag entfernen oder aktualisieren: Ein kanonisches lokales Repository kann die Auswahl der Packagist-Version verhindern. Lokale Quellen erst entfernen, wenn Composer nicht mehr darauf verweist. Den Repository-Eintrag in der Konfiguration entfernen, in der er angelegt wurde (Projekt oder global). Danach den Installationsbefehl oben mit `"^1.0"` ausführen, um eine festgelegte Alpha-Version zu ersetzen. Ein einfaches `composer update` ändert diese Versionsvorgabe nicht.
 
 [Quellcode und Fehlerberichte](https://github.com/el-choco/error-analyzer) · [Packagist](https://packagist.org/packages/el-choco/error-analyzer)
 
