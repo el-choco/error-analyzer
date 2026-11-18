@@ -34,7 +34,7 @@ const group = { id: 'a', level: 'ERROR', count: 3, message: 'Broken image <scrip
   sample: 'Error with ``` in the message\n#0 [flarum]/vendor/acme/media/A.php(12): run(…)',
   packages: [{ name: 'acme/media', version: '1.2.0', type: 'extension', enabled: true }], files: ['flarum-2026-11-18.log'] };
 const fixture = {
-  version: '0.1.0-alpha.1', generatedAt: '2026-11-18T12:00:00Z',
+  version: '0.1.0-alpha.2', generatedAt: '2026-11-18T12:00:00Z',
   scan: { filesScanned: 1, filesFound: 1, records: 6, matched: 4, bytes: 12345, partial: true, warnings: [] },
   environment: { flarum: 'v2.0.2', phpWeb: '8.4.26', extensions: [...group.packages, { name: 'acme/other', version: '2.0.0', enabled: false }] },
   groups: [group, { ...group, id: 'b', count: 1, message: 'Other failure', last: '2026-11-18T12:00:00Z', packages: [] }],
@@ -133,6 +133,26 @@ test('clipboard success and manual fallback use the edited preview text', async 
   context.navigator.clipboard = { writeText: async (value) => { assert.equal(value, 'Reviewed report'); } };
   await page.copyReport();
   assert.equal(page.copyState, 'copied');
+});
+
+test('prefix and path evidence are shown in details and exported reports', async () => {
+  const { page, modules } = setup();
+  await page.scan();
+  const depot = { name: 'ernestdefoe/depot', version: 'v1.5.2', type: 'extension', enabled: true, evidence: ['prefix'], logPrefix: '[depot]' };
+  const depotGroup = { ...group, message: '[depot] GitHub sync skipped', packages: [depot] };
+  const details = JSON.stringify(page.details(depotGroup));
+  assert.match(details, /evidence_prefix/);
+  assert.match(details, /\[depot\]/);
+  const report = modules.report.buildReport(fixture, depotGroup, '', false, (key) => key);
+  assert.match(report, /ernestdefoe\/depot v1\.5\.2/);
+  assert.match(report, /evidence_prefix \[depot\]/);
+  assert.doesNotMatch(report, /evidence_path/);
+  const both = modules.report.attributionText({ ...depot, evidence: ['path', 'prefix'] }, (key) => key);
+  assert.equal(both, 'evidence_path · evidence_prefix [depot]');
+  assert.equal(modules.report.attributionText(group.packages[0], (key) => key), 'evidence_path');
+  page.packageFilter = 'ernestdefoe/depot';
+  page.data.groups = [depotGroup];
+  assert.equal(page.groups().length, 1);
 });
 
 test('source renders log text through Mithril text nodes', () => {

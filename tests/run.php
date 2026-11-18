@@ -57,6 +57,34 @@ check($installed['packages']['vendor/library']['type'] === 'library', 'Library c
 check(count($inventory->mentioned($base.'/vendor/acme/flarum-ext-sample/src/A.php', $installed['packages'])) === 1, 'Vendor path attribution');
 check(count($inventory->mentioned($base.'/workbench/local/src/A.php', $installed['packages'])) === 1, 'Local Composer install-path attribution');
 check($inventory->mentioned($base.'/vendor/acme/disabled-extra/src/A.php', $installed['packages']) === [], 'Package path boundaries');
+$depotPackages = $packages;
+$depotPackages['packages'][] = ['name' => 'ernestdefoe/depot', 'version' => 'v1.5.2', 'type' => 'flarum-extension'];
+file_put_contents($base.'/vendor/composer/installed.json', json_encode($depotPackages));
+$withDepot = $inventory->read($base.'/vendor', ['ernestdefoe-depot']);
+$depotMessage = '[depot] GitHub sync skipped for el-choco/flarum-fa-picker.git: Client error: `GET https://api.github.com/repos/private/example` resulted in a `404 Not Found` response:';
+$prefixMatch = $inventory->mentioned($depotMessage, $withDepot['packages']);
+check(count($prefixMatch) === 1 && $prefixMatch[0]['name'] === 'ernestdefoe/depot', 'Depot prefix resolves the installed package');
+check($prefixMatch[0]['evidence'] === ['prefix'] && $prefixMatch[0]['logPrefix'] === '[depot]', 'Prefix evidence explicitly identified');
+check($prefixMatch[0]['version'] === 'v1.5.2' && !isset($prefixMatch[0]['paths']), 'Prefix result includes version and excludes internal paths');
+check($inventory->mentioned($depotMessage, $installed['packages']) === [], 'Uninstalled prefix target is not attributed');
+check($inventory->mentioned('Failure while reading '.$depotMessage, $withDepot['packages']) === [], 'Prefix must start the message');
+check($inventory->mentioned('[depot-other] Failure', $withDepot['packages']) === [], 'Similar prefix is not guessed');
+check($inventory->mentioned('[sample] Failure', $withDepot['packages']) === [], 'Arbitrary package basename is not inferred');
+$fullPrefix = $inventory->mentioned('[acme/flarum-ext-sample] Failure', $withDepot['packages']);
+check(count($fullPrefix) === 1 && $fullPrefix[0]['evidence'] === ['prefix'], 'Explicit installed Composer package prefix supported');
+$both = $inventory->mentioned('[depot] Failure at '.$base.'/vendor/ernestdefoe/depot/src/Sync.php', $withDepot['packages']);
+check(count($both) === 1 && $both[0]['evidence'] === ['path', 'prefix'], 'Path and prefix evidence combined on one package');
+$pathOnly = $inventory->mentioned($base.'/vendor/acme/disabled/src/File.php', $installed['packages']);
+check($pathOnly[0]['evidence'] === ['path'], 'Path evidence labelled explicitly');
+$prefixLog = $base.'/storage/logs/depot.log';
+file_put_contents($prefixLog, str_repeat('[2026-11-18 13:00:06] flarum.INFO: '.$depotMessage."\n", 279));
+$depotResult = (new Analyzer())->scan($base, $base.'/storage', $base.'/vendor', ['ernestdefoe-depot'], 5, 'DEBUG');
+check(count($depotResult['groups']) === 1 && $depotResult['groups'][0]['count'] === 279, 'Maintainer example groups 279 INFO occurrences');
+check($depotResult['groups'][0]['level'] === 'INFO', 'Prefix attribution preserves logged severity');
+check($depotResult['groups'][0]['packages'][0]['logPrefix'] === '[depot]', 'Analyzer returns prefix evidence');
+check(!str_contains(json_encode($depotResult), 'api.github.com'), 'Prefix attribution preserves URL redaction');
+unlink($prefixLog);
+file_put_contents($base.'/vendor/composer/installed.json', json_encode($packages));
 
 $redactor = new Redactor($base, $base.'/storage');
 $secretText = 'password="let me in" API_KEY=very-secret session_id=xyz user_id=12345 email=hello@example.test '.

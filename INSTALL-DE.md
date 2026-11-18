@@ -1,11 +1,11 @@
 # Error Analyzer installieren
 
-Version `0.1.0-alpha.1` für **Flarum ab 2.0.2** und **PHP ab 8.3**.
+Version `0.1.0-alpha.2` für **Flarum ab 2.0.2** und **PHP ab 8.3**.
 Diese Ausgabe wird aus der lokalen ZIP installiert.
 
 ## A. Dein CrazyMax-Container auf DietPi
 
-Die ZIP `error-analyzer-0.1.0-alpha.1.zip` zunächst nach `/tmp` auf den DietPi übertragen.
+Die ZIP `error-analyzer-0.1.0-alpha.2.zip` zunächst nach `/tmp` auf den DietPi übertragen.
 Die Befehle verwenden deinen Container `flarum2-flarum-1` und den vorhandenen Mount `/mnt/wdblue/flarum2/data:/data`.
 Auf dem DietPi-Host als `root` ausführen.
 
@@ -13,9 +13,9 @@ Auf dem DietPi-Host als `root` ausführen.
 
 ```bash
 install -d -m 755 /mnt/wdblue/flarum2/data/extension-sources && \
-unzip /tmp/error-analyzer-0.1.0-alpha.1.zip -d /mnt/wdblue/flarum2/data/extension-sources && \
+unzip /tmp/error-analyzer-0.1.0-alpha.2.zip -d /mnt/wdblue/flarum2/data/extension-sources && \
 docker exec --user flarum flarum2-flarum-1 \
-  test -r /data/extension-sources/error-analyzer-0.1.0-alpha.1/composer.json
+  test -r /data/extension-sources/error-analyzer-0.1.0-alpha.2/composer.json
 ```
 
 ### 2. Paket als Flarum-Benutzer installieren
@@ -27,11 +27,11 @@ docker exec --user flarum \
   --env COMPOSER_HOME=/data/extensions/composer-home \
   --workdir /opt/flarum flarum2-flarum-1 \
   composer config --global repositories.el-choco-error-analyzer \
-  '{"type":"path","url":"/data/extension-sources/error-analyzer-0.1.0-alpha.1","options":{"symlink":false,"versions":{"el-choco/error-analyzer":"0.1.0-alpha.1"}}}' && \
+  '{"type":"path","url":"/data/extension-sources/error-analyzer-0.1.0-alpha.2","options":{"symlink":false,"versions":{"el-choco/error-analyzer":"0.1.0-alpha.2"}}}' && \
 docker exec --user flarum \
   --env COMPOSER_HOME=/data/extensions/composer-home \
   --workdir /opt/flarum flarum2-flarum-1 \
-  composer require 'el-choco/error-analyzer:0.1.0-alpha.1' \
+  composer require 'el-choco/error-analyzer:0.1.0-alpha.2' \
     --update-no-dev --minimal-changes --no-scripts --no-interaction && \
 docker exec --user flarum flarum2-flarum-1 extension sync && \
 docker exec --user flarum --workdir /opt/flarum flarum2-flarum-1 \
@@ -68,7 +68,7 @@ Die ZIP zunächst nach `/tmp` übertragen. Als `root` ausführen.
 
 ```bash
 install -d -m 755 /var/www/flarum-extension-sources && \
-unzip /tmp/error-analyzer-0.1.0-alpha.1.zip -d /var/www/flarum-extension-sources
+unzip /tmp/error-analyzer-0.1.0-alpha.2.zip -d /var/www/flarum-extension-sources
 ```
 
 Danach im Flarum-2-Verzeichnis installieren.
@@ -76,8 +76,8 @@ Danach im Flarum-2-Verzeichnis installieren.
 ```bash
 cd /var/www/flarum2
 runuser -u www-data -- composer config repositories.el-choco-error-analyzer \
-  '{"type":"path","url":"/var/www/flarum-extension-sources/error-analyzer-0.1.0-alpha.1","options":{"symlink":false,"versions":{"el-choco/error-analyzer":"0.1.0-alpha.1"}}}' && \
-runuser -u www-data -- composer require 'el-choco/error-analyzer:0.1.0-alpha.1' \
+  '{"type":"path","url":"/var/www/flarum-extension-sources/error-analyzer-0.1.0-alpha.2","options":{"symlink":false,"versions":{"el-choco/error-analyzer":"0.1.0-alpha.2"}}}' && \
+runuser -u www-data -- composer require 'el-choco/error-analyzer:0.1.0-alpha.2' \
   --update-no-dev --minimal-changes --no-scripts --no-interaction && \
 runuser -u www-data -- php flarum extension:enable el-choco-error-analyzer && \
 runuser -u www-data -- php flarum cache:clear --force

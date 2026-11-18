@@ -4,6 +4,8 @@ namespace ElChoco\ErrorAnalyzer;
 
 final class PackageInventory
 {
+    private const PREFIX_PACKAGES = ['depot' => 'ernestdefoe/depot'];
+
     public function read(string $vendor, array $enabled): array
     {
         $file = $vendor.'/composer/installed.json';
@@ -46,15 +48,30 @@ final class PackageInventory
 
     public function mentioned(string $body, array $packages): array
     {
+        $prefix = null;
+        if (preg_match('/^\s*\[([a-z0-9_.\/-]+)\](?=\s|:|$)/i', $body, $match)) {
+            $prefix = $match[1];
+        }
         $body = strtolower(preg_replace('~/+~', '/', str_replace('\\', '/', $body)) ?? '');
         $matches = [];
         foreach ($packages as $package) {
             foreach ($package['paths'] as $path) {
                 if ($path !== '' && str_contains($body, strtolower($path).'/')) {
                     unset($package['paths']);
+                    $package['evidence'] = ['path'];
                     $matches[$package['name']] = $package;
                     break;
                 }
+            }
+        }
+        if ($prefix !== null) {
+            $name = self::PREFIX_PACKAGES[strtolower($prefix)] ?? strtolower($prefix);
+            if (isset($packages[$name])) {
+                $package = $matches[$name] ?? $packages[$name];
+                unset($package['paths']);
+                $package['evidence'] = array_values(array_unique(array_merge($package['evidence'] ?? [], ['prefix'])));
+                $package['logPrefix'] = '['.$prefix.']';
+                $matches[$name] = $package;
             }
         }
 

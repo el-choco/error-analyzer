@@ -2,7 +2,7 @@
 
 Understand recurring forum log errors and prepare the information needed for support.
 
-**Version 0.1.0-alpha.1 · Flarum 2.0.2 or later · PHP 8.3 or later · MIT**
+**Version 0.1.0-alpha.2 · Flarum 2.0.2 or later · PHP 8.3 or later · MIT**
 
 
 ## Features
@@ -13,6 +13,7 @@ Understand recurring forum log errors and prepare the information needed for sup
 - Shows occurrence counts and the first and last occurrence within the scanned sample.
 - Search by message or package, filter by package and sort by recency or frequency.
 - Identifies package paths using Composer's `installed.json`, including local packages with an `install-path` entry.
+- Attributes known message prefixes and identifies the evidence in the interface and report. `[depot]` maps to the installed `ernestdefoe/depot`. An explicit installed Composer package prefix such as `[fof/upload]` is also recognized.
 - Distinguishes extensions, core and libraries and shows their currently installed versions.
 - Prepares an editable report with reproduction notes, Flarum and web PHP versions, the redacted excerpt and packages mentioned in it.
 - Optionally includes the complete installed extension list and activation states.
@@ -27,7 +28,7 @@ Understand recurring forum log errors and prepare the information needed for sup
 4. Prepare the report and review the complete text.
 5. Copy the report into your support request or save it as text.
 
-Package attribution identifies paths present in the captured message and stack frames. It does not establish causation. Versions reflect the current installation and may differ from those installed when an older error occurred.
+Every attribution shows **Package path in log excerpt**, **Hint from log prefix**, or both. Other short aliases require a reviewed mapping. The referenced package must be installed according to Composer metadata. It does not establish causation. Versions reflect the current installation and may differ from those installed when an older error occurred.
 
 ## Scan scope
 
@@ -72,7 +73,7 @@ Run backend checks with PHP 8.3+ and a separate Flarum 2 dependency autoloader.
 php tests/run.php /path/to/test-forum/vendor/autoload.php
 ```
 
-Tests create their own temporary log and package fixtures and check grouping, filtering, limits, package attribution, redaction and authorization with real Flarum dependencies. Browser checks use sample data. A live installation test on the target container remains pending.
+Tests create their own temporary log and package fixtures and check grouping, filtering, limits, package attribution, redaction and authorization with real Flarum dependencies. Browser checks use sample data. The maintainer reported repeated successful Alpha 1 tests on Flarum 2.0.2 and web PHP 8.5.12 in the CrazyMax container. Alpha 2 prefix attribution has been checked locally, with its target-container test still pending.
 
 
 ---
@@ -81,7 +82,7 @@ Tests create their own temporary log and package fixtures and check grouping, fi
 
 Fehler im Forum schneller einordnen und die passenden Informationen für den Support zusammenstellen.
 
-**Version 0.1.0-alpha.1 · Flarum ab 2.0.2 · PHP ab 8.3 · MIT**
+**Version 0.1.0-alpha.2 · Flarum ab 2.0.2 · PHP ab 8.3 · MIT**
 
 [English documentation](README.en.md) · [Deutsche Installation](INSTALL-DE.md) · [English installation](INSTALL-EN.md)
 
@@ -93,6 +94,7 @@ Fehler im Forum schneller einordnen und die passenden Informationen für den Sup
 - Häufigkeit sowie erstes und letztes Vorkommen innerhalb des gelesenen Ausschnitts zeigen.
 - Nach Meldung oder Paket suchen, nach Paket filtern und nach Häufigkeit oder letztem Auftreten sortieren.
 - Paketpfade mit Composers `installed.json` abgleichen. Die angezeigten Versionen stammen aus dem aktuell installierten Paketstand.
+- Bekannte Log-Präfixe zuordnen und die Grundlage am Paket sowie im Supportbericht anzeigen. `[depot]` verweist auf das installierte `ernestdefoe/depot`. Präfixe mit einem vollständigen installierten Composer-Paketnamen, beispielsweise `[fof/upload]`, werden ebenfalls erkannt.
 - Erweiterungen, Flarum-Kern und Bibliotheken unterscheiden. Lokale Composer-Pakete können über `install-path` zugeordnet werden.
 - Einen Supportbericht mit Problembeschreibung, Flarum-Version, Web-PHP-Version, Fehlerauszug und beteiligten Paketen vorbereiten.
 - Optional die komplette Liste installierter Erweiterungen mit Aktivierungsstatus aufnehmen.
@@ -107,7 +109,9 @@ Fehler im Forum schneller einordnen und die passenden Informationen für den Sup
 4. Erzeuge den Bericht und prüfe den gesamten Text.
 5. Kopiere ihn in deine Supportanfrage oder speichere ihn als Textdatei.
 
-Ein Paket im Fehlerverlauf ist ein Anhaltspunkt für die Untersuchung. Seine Nennung belegt keine Fehlerursache. Die Paketversion beschreibt den aktuellen Stand, der vom Stand zum damaligen Fehlerzeitpunkt abweichen kann.
+Bei jeder Paketzuordnung steht **Paketpfad im Logauszug** oder **Hinweis aus Log-Präfix**. Treffen beide zu, werden beide angezeigt. Andere kurze Präfixe werden erst nach einer geprüften Zuordnung ergänzt. Die jeweilige Erweiterung muss in Composers Paketmetadaten installiert sein.
+
+Ein zugeordnetes Paket ist ein Anhaltspunkt für die Untersuchung. Seine Nennung belegt keine Fehlerursache. Die Paketversion beschreibt den aktuellen Stand, der vom Stand zum damaligen Fehlerzeitpunkt abweichen kann.
 
 ## Umfang der Analyse
 
@@ -151,4 +155,6 @@ Backend-Prüfung mit einem separaten Flarum-2-Autoloader und PHP 8.3 oder neuer 
 php tests/run.php /pfad/zum/testforum/vendor/autoload.php
 ```
 
-Die Tests legen eigene temporäre Log- und Paketdateien an. Sie prüfen Gruppierung, Filter, Begrenzungen, Paketzuordnung, Maskierung und Zugriffsschutz mit echten Flarum-Abhängigkeiten. Browserprüfungen verwenden Beispieldaten. Der Praxistest im Zielcontainer steht vor der ersten Installation noch aus.
+Die Tests legen eigene temporäre Log- und Paketdateien an. Sie prüfen Gruppierung, Filter, Begrenzungen, Paketzuordnung, Maskierung und Zugriffsschutz mit echten Flarum-Abhängigkeiten. Browserprüfungen verwenden Beispieldaten. Alpha 1 wurde vom Betreiber mehrfach erfolgreich mit Flarum 2.0.2 und Web-PHP 8.5.12 im CrazyMax-Container getestet. Die Präfixzuordnung von Alpha 2 ist lokal geprüft, der Praxistest dieser Ausgabe im Zielcontainer steht noch aus.
+
+[Update auf Alpha 2](UPDATE-DE.md) · [Upgrade to Alpha 2](UPDATE-EN.md)

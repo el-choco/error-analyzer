@@ -1,3 +1,9 @@
+export function attributionText(item, text) {
+  return (item.evidence || ['path']).map((source) =>
+    text('evidence_' + source) + (source === 'prefix' && item.logPrefix ? ' ' + item.logPrefix : '')
+  ).join(' · ');
+}
+
 export function buildReport(data, group, notes, includeExtensions, text) {
   const lines = [
     '# Error Analyzer · ' + data.version,
@@ -17,7 +23,7 @@ export function buildReport(data, group, notes, includeExtensions, text) {
     '',
     '## ' + text('packages'),
     text('attribution_help'),
-    ...group.packages.map((item) => '- ' + item.name + ' ' + item.version + ' (' + text('type_' + item.type) + ')'),
+    ...group.packages.map((item) => '- ' + item.name + ' ' + item.version + ' (' + text('type_' + item.type) + ') · ' + attributionText(item, text)),
     ...(!group.packages.length ? [text('no_packages')] : []),
     '',
     '## ' + text('sample'),

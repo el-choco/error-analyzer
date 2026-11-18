@@ -4,13 +4,13 @@ import json
 import zipfile
 
 root = Path(__file__).resolve().parent.parent
-version = "0.1.0-alpha.1"
+version = "0.1.0-alpha.2"
 destination = root / "dist"
 destination.mkdir(exist_ok=True)
 archive = destination / f"error-analyzer-{version}.zip"
 top_files = {
-    "composer.json", "extend.php", "LICENSE", "README.md", "README.en.md",
-    "INSTALL-DE.md", "INSTALL-EN.md", "CHANGELOG.md", ".gitignore", ".gitattributes",
+    "composer.json", "extend.php", "LICENSE", "README.md",
+    "INSTALL-DE.md", "INSTALL-EN.md", "UPDATE-DE.md", "UPDATE-EN.md", "CHANGELOG.md", ".gitignore", ".gitattributes",
 }
 folders = {"src", "less", "locale", "js", "tests", "resources"}
 files = []

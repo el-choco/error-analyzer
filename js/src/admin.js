@@ -1,7 +1,7 @@
 import app from 'flarum/admin/app';
 import ExtensionPage from 'flarum/admin/components/ExtensionPage';
 import Admin from 'flarum/common/extenders/Admin';
-import { buildReport } from './report';
+import { attributionText, buildReport } from './report';
 
 const translate = (key, values = {}) => app.translator.trans('el-choco-error-analyzer.admin.' + key, values);
 const reportText = (key) => {
@@ -109,7 +109,7 @@ export class AnalyzerPage extends ExtensionPage {
     return m('.EA', [
       m('section.EA-hero', [
         m('div', [m('h2', [icon('stethoscope'), ' Error Analyzer']), m('p', translate('intro'))]),
-        m('span.EA-version', this.data?.version || '0.1.0-alpha.1'),
+        m('span.EA-version', this.data?.version || '0.1.0-alpha.2'),
       ]),
       m('section.EA-scan', { 'aria-label': reportText('scan_options') }, [
         m('label', [translate('file_limit'), m('select.FormControl', { value: this.files, disabled: this.loading, onchange: (event) => { this.files = event.target.value; } },
@@ -170,7 +170,8 @@ export class AnalyzerPage extends ExtensionPage {
       m('h4', translate('packages')),
       m('p.EA-muted', translate('attribution_help')),
       group.packages.length ? m('ul.EA-packages', group.packages.map((item) => m('li', [
-        m('div', [m('code', item.name), m('small', translate('type_' + item.type))]), m('span', item.version),
+        m('div', [m('code', item.name), m('small', translate('type_' + item.type)),
+          m('small.EA-evidence', attributionText(item, reportText))]), m('span', item.version),
       ]))) : m('p.EA-muted', translate('no_packages')),
       m('details.EA-log', { open: true }, [m('summary', translate('sample')), m('pre', group.sample)]),
       m('p.EA-muted', [translate('log_files'), ' ', group.files.join(', ')]),
